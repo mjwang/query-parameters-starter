@@ -15,17 +15,23 @@ const findPlantById = (id) => plants.find(plant => plant.id === id)
 
 // Create a new plant entry
 router.post('/', (req, res) => {
-  const { name, type, sunlight, watering } = req.body
 
-  const newPlant = { id: plants.length + 1, name, type, sunlight, watering }
-  plants.push(newPlant)
+  // Get the new plant entry information from the request body
 
-  res.status(201).send(newPlant)
+
+
+  // Add the new plant to plants
+
+
+  // Update response status and return the newly created plant
+  res.status(501)
 })
 
 // Read all plants or filter by type and/or sunlight requirements
 router.get('/', (req, res) => {
-  const { type, sunlight } = req.query
+  
+  // Get the type and sunlight filter values from the query parameters
+
 
   let filteredPlants = plants
 
