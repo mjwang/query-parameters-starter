@@ -17,31 +17,41 @@ const findPlantById = (id) => plants.find(plant => plant.id === id)
 router.post('/', (req, res) => {
 
   // Get the new plant entry information from the request body
+  const plantData = req.body
 
+  if (!plantData || !plantData.name){
+    res.status(400).send("Need to specify a plant name")
+  }
 
-
+  const newPlant = {
+    id: plants.length + 1,
+    ...plantData,
+  }
   // Add the new plant to plants
-
+  console.log(newPlant)
+  plants.push(newPlant)
 
   // Update response status and return the newly created plant
-  res.status(501)
+  res.status(201).send(newPlant)
 })
 
 // Read all plants or filter by type and/or sunlight requirements
 router.get('/', (req, res) => {
   
   // Get the type and sunlight filter values from the query parameters
-
+  const queryParams = req.query
 
   let filteredPlants = plants
 
   // Filter by type if type query parameter is provided
-  
-  
+  if (queryParams?.type) {
+    filteredPlants = filteredPlants.filter(plant => plant.type.toLowerCase() === queryParams.type.toLowerCase())
+  }
 
   // Filter by sunlight if sunlight query parameter is provided
-  
-
+  if (queryParams?.sunlight) {
+    filteredPlants = filteredPlants.filter(plant => plant.sunlight.toLowerCase() === queryParams.sunlight.toLowerCase())
+  }
 
   res.status(200).send(filteredPlants)
 })
