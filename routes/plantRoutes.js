@@ -1,5 +1,8 @@
 const express = require('express')
+const { PrismaClient } = require('./../generated/prisma')
 const router = express.Router()
+
+const prisma = new PrismaClient();
 
 // In-memory array to store plant care information
 let plants = [
@@ -36,20 +39,20 @@ router.post('/', (req, res) => {
 })
 
 // Read all plants or filter by type and/or sunlight requirements
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   
   // Get the type and sunlight filter values from the query parameters
   const queryParams = req.query
 
-  let filteredPlants = plants
+  let filteredPlants = await prisma.plant.findMany();
 
   // Filter by type if type query parameter is provided
-  if (queryParams?.type) {
+  if (queryParams.type) {
     filteredPlants = filteredPlants.filter(plant => plant.type.toLowerCase() === queryParams.type.toLowerCase())
   }
 
   // Filter by sunlight if sunlight query parameter is provided
-  if (queryParams?.sunlight) {
+  if (queryParams.sunlight) {
     filteredPlants = filteredPlants.filter(plant => plant.sunlight.toLowerCase() === queryParams.sunlight.toLowerCase())
   }
 
